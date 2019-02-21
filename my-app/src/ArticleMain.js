@@ -5,7 +5,19 @@ class ArticleMain extends Component {
   	super(props);
   }
 
+  readArticle() {
+    //get article
+  }
+
+  componentDidMount() {
+    //get request goes here
+  }
+
   render() {
+    if (this.props.show === false) {
+      return null
+    }
+
   	return(
   	  <div>
   	  	<p>{this.props.text}</p>
