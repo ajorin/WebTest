@@ -4,18 +4,33 @@ import './App.css';
 import ArticleMain from './ArticleMain.js'
 import Imports from './Imports.js'
 import Instructions from './Instructions.js'
+import axios from 'axios'
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      showArticleBox: false
+      showArticleBox: false,
+      articles: []
     }
   }
 
+   componentDidMount() {
+
+   }
+
   showArticle() {
     this.setState({showArticleBox: true});
+    axios({
+      method: 'get',
+      url: '/app/getArticle',
+      data: 'Insert random number'
+    }).then(function(response) {
+      //store fetched article data
+    }).catch(function(err) {
+      console.log(err); //Do something with err
+    });
   }
 
   render() {
