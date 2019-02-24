@@ -10,6 +10,7 @@ import article2 from './data/article-2.json';
 import article3 from './data/article-3.json';
 import article4 from './data/article-4.json';
 import article5 from './data/article-5.json';
+import './button.css';
 
 
 class App extends Component {
@@ -19,15 +20,29 @@ class App extends Component {
     this.state = {
       showArticleBox: false,
       artcileSelected: '',
-      articles: [article1, article2, article3, article4, article5]
+      articles: [article1, article2, article3, article4, article5],
+      randomVal: 5
     }
+    this.generateRandomNumber = this.generateRandomNumber.bind(this);
   }
 
 
   readArticle() {
-    let article = JSON.parse(JSON.stringify(article1));
-    console.log(article);
-    this.setState({articl1: article});
+    let randomNumber = this.generateRandomNumber(1, this.state.articles.length -1);
+    console.log("randomNumber:" + randomNumber);
+    let article = JSON.parse(JSON.stringify(this.state.articles[randomNumber]));
+    this.removeArticle(randomNumber);
+    this.setState({articleSelected: article});
+  }
+
+  generateRandomNumber(minimum, maxamimum) {
+    let min = Math.ceil(minimum);
+    let max = Math.floor(maxamimum)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  removeArticle(i) {
+    this.state.articles.splice(i, 1);
   }
 
   showArticle() {
@@ -39,13 +54,14 @@ class App extends Component {
     }).then(function(response) {
       //store fetched article data
     }).catch(function(err) {
-      console.log(err); //Do something with err
+      //console.log(err); //Do something with err
     });
     //Now Stubbing the Get Request
-    let article = JSON.parse(JSON.stringify(article5));
-    console.log(article);
-    console.log(this.state.articles);
-    this.setState({articleSelected: article});
+    //let article = JSON.parse(JSON.stringify(article5));
+    //console.log(article);
+    //console.log(this.state.articles);
+    //this.setState({articleSelected: article});
+    this.readArticle();
   }
 
   render() {
@@ -55,7 +71,7 @@ class App extends Component {
         <Imports />
         <Instructions />
         <ArticleMain article={this.state.articleSelected} show={this.state.showArticleBox}  />
-        <button className="btn" type="button" onClick={this.showArticle.bind(this)} >button</button>
+        <button className="button" type="button" onClick={this.showArticle.bind(this)} >button</button>
       </div>
     );
   }
