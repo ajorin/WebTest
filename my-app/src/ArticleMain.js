@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import './paragraph.css';
+
 
 class ArticleMain extends Component {
   constructor(props) {
@@ -17,7 +19,10 @@ class ArticleMain extends Component {
   }
 
   createParagraph(text) {
-    return (<p>{text}</p>)
+    return (
+      <div>
+        <p className="paragraph_content">{text}</p>
+      </div>)
   }
 
   createImage(model) {
@@ -41,7 +46,6 @@ class ArticleMain extends Component {
   }
 
   createHeading(text) {
-    console.log("Heading: " + text)
     return (<h2>{text}</h2>);
   }
 
@@ -50,7 +54,6 @@ class ArticleMain extends Component {
     let article = this.props.article;
     let articleComponents = [];
     for (let i=0; i < article.body.length; i++) {
-      console.log(article.body[i].type);
       if (article.body[i].type === "heading") {
         articleComponents.push(this.createHeading(article.body[i].model.text));
       }
@@ -68,15 +71,12 @@ class ArticleMain extends Component {
   }
 
   renderArticleTitle() {
-    console.log("title:" + this.props.article.title);
     return (
       <h1>{this.props.article.title}</h1>
     )
   }
 
   render() {
-    console.log(this.props.show);
-    console.log(this.props.article);
     if (this.props.show === false) {
       return null
     }
