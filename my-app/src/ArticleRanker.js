@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 
 class ArticleRanker extends Component { 
   constructor(props) {
@@ -10,12 +11,17 @@ class ArticleRanker extends Component {
   	  secondArticleSelected: '',
   	  thirdArticleSelected: ''
   	}
+  	this.validateRankings = this.validateRankings.bind(this);
+  	this.setFirstArticleSelected = this.setFirstArticleSelected.bind(this);
+  	this.setSecondArticleSelected = this.setSecondArticleSelected.bind(this);
+  	this.setThirdArticleSelected = this.setThirdArticleSelected.bind(this);
   }
 
   setFirstArticleSelected(event) {
   	console.log(event.target.value);
   	this.state.chosenArticles.push(event.target.value);
   	this.setState({firstArticleSelected: event.target.value});
+  	this.validateRankings();
   }
 
   setSecondArticleSelected(event) {
@@ -23,12 +29,14 @@ class ArticleRanker extends Component {
   	console.log(event.target.value);
   	this.state.chosenArticles.push(event.target.value);
   	this.setState({secondArticleSelected: event.target.value});
+  	this.validateRankings();
   }
 
   setThirdArticleSelected(event) {
   	console.log(event.target.value);
   	this.state.chosenArticles.push(event.target.value);
-  	this.setState({thirdArticleSelected: event.target.value})
+  	this.setState({thirdArticleSelected: event.target.value});
+  	this.validateRankings();
   }
 
   renderRankingFirst() {
@@ -39,15 +47,15 @@ class ArticleRanker extends Component {
   	      <div className="form-group">
   	        <div>
   	          <label for="option1">Article 1</label>
-  	          <input type="radio" value={this.state.pendingArticles[0]} name="article" />
+  	          <input type="radio" value="article1" name="selectionOne" />
   	        </div>
   	        <div className="form-group">
   	          <label for="option1">Article 2</label>
-  	          <input type="radio" value={this.state.pendingArticles[1]} name="article"/>
+  	          <input type="radio" value="article2" name="selectionOne"/>
   	        </div>
   	        <div className="form-group">
   	          <label for="option1">Article 3</label>
-  	          <input type="radio" value={this.state.pendingArticles[2]} name="article" />
+  	          <input type="radio" value="article3" name="selectionOne" />
   	        </div>
   	      </div>
   	    </div>
@@ -62,15 +70,15 @@ class ArticleRanker extends Component {
   	      <h3>Which Article would you rank second?</h3>
   	      <div className="form-group">
   	        <label for="option1">Article 1</label>
-  	        <input type="radio" value="article1" name="article" />
+  	        <input type="radio" value="article1" name="selectionTwo" />
   	      </div>
   	        <div className="form-group">
   	        <label for="option1">Article 2</label>
-  	        <input type="radio" value="article2" name="article"/>
+  	        <input type="radio" value="article2" name="selectionTwo"/>
   	      </div>
   	      <div className="form-group">
   	        <label for="option1">Article 3</label>
-  	        <input type="radio" value="article3" name="article" />
+  	        <input type="radio" value="article3" name="selectionTwo" />
   	      </div>
   	    </div>
   	  </div>
@@ -84,15 +92,15 @@ class ArticleRanker extends Component {
   	      <h3>Which Article would you rank third?</h3>
   	      <div className="form-group">
   	        <label for="option1">Article 1</label>
-  	        <input type="radio" value="article1" name="article" />
+  	        <input type="radio" value="article1" name="selectionThird" />
   	      </div>
   	        <div className="form-group">
   	        <label for="option1">Article 2</label>
-  	        <input type="radio" value="article2" name="article"/>
+  	        <input type="radio" value="article2" name="selectionThird"/>
   	      </div>
   	      <div className="form-group">
   	        <label for="option1">Article 3</label>
-  	        <input type="radio" value="article3" name="article" />
+  	        <input type="radio" value="article3" name="selectionThird" />
   	      </div>
   	    </div>
   	  </div>
@@ -100,13 +108,31 @@ class ArticleRanker extends Component {
   }
 
   submitRankings() {
-  	//Call Validation method here
-  	let rankingObject = {
-  	  first: this.state.firstArticleSelected,
-  	  second: this.state.secondArticleSelected,
-  	  third: this.state.thirdArticleSelected
-  	} 
-   	//axios post request if valid
+  	  console.log("hi2");
+  	  this.validateRankings();
+  	  if (this.state.rankingsValid) {
+  	  	let rankingObject = {
+  	      first: this.state.firstArticleSelected,
+  	      second: this.state.secondArticleSelected,
+  	      third: this.state.thirdArticleSelected
+  	    }
+  	    console.log(rankingObject);	
+  	    //axios post request if valid	 
+  	  } else {
+  	  	console.log("rankigns not valid");
+  	  }
+  }
+
+  validateRankings() {
+  	if (this.state.firstArticleSelected === this.state.secondArticleSelected) {
+	  this.setState({rankingsValid: false});
+	} else if (this.state.firstArticleSelected === this.state.thirdArticleSelected) {
+	  this.setState({rankingsValid: false});
+	} else  if (this.state.secondArticleSelected === this.state.thirdArticleSelected) {
+	  this.setState({rankingsValid: false});
+	} else {
+	  this.setState({rankingsValid: true});
+	}
   }
 
 
