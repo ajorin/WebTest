@@ -108,18 +108,24 @@ class ArticleRanker extends Component {
   }
 
   submitRankings() {
-  	  console.log("hi2");
-  	  this.validateRankings();
-  	  if (this.state.rankingsValid) {
-  	  	let rankingObject = {
-  	      first: this.state.firstArticleSelected,
-  	      second: this.state.secondArticleSelected,
-  	      third: this.state.thirdArticleSelected
-  	    }
-  	    console.log(rankingObject);	
-  	    //axios post request if valid	 
+  	this.validateRankings();
+  	if (this.state.rankingsValid) {
+  	  let rankingObject = {
+  	    first: this.state.firstArticleSelected,
+  	    second: this.state.secondArticleSelected,
+  	    third: this.state.thirdArticleSelected
+  	  }
+  	  axios({
+  	    method: 'post',
+  	    url: '/ArticleRanker/rankings',
+  	    data: rankingObject
+  	  }).then(function(response) {
+  	    //On Success message here
+  	  }).catch(function(error) {
+  	    //error message here
+  	  })
   	  } else {
-  	  	console.log("rankigns not valid");
+  	  	console.log("rankings not valid");
   	  }
   }
 
